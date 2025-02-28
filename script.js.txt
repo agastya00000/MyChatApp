@@ -1,0 +1,31 @@
+// Firebase configuration (Replace with your own Firebase details)
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Function to send a message
+function sendMessage() {
+    const msg = document.getElementById("messageInput").value;
+    db.ref("messages").push().set({
+        "text": msg
+    });
+    document.getElementById("messageInput").value = "";
+}
+
+// Function to display messages
+db.ref("messages").on("child_added", function(snapshot) {
+    const msg = snapshot.val().text;
+    const p = document.createElement("p");
+    p.textContent = msg;
+    document.getElementById("chatbox").appendChild(p);
+});
